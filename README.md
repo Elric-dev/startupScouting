@@ -78,7 +78,7 @@ Invece di log su console volatili, il sistema mantiene un file `startup_scouter_
 
 ## Istruzioni per l'uso
 
-1. Apri il foglio Google **startupScout**.
+1. Apri il foglio Google **startupScout**: https://drive.google.com/drive/folders/1DvEDDQzUhoTZ9Gfu7356UvP7DPb8PrJQ, e cerca il documento google sheets. 
 2. Individua il menu **"Startup Scouting AI"**.
 3. **Passaggio 1:** Esegui "Scout Accelerators" per popolare la lista base.
 4. **Passaggio 2:** Esegui "Update Startups" per estrarre i dati del portfolio.
