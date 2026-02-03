@@ -1,0 +1,9 @@
+
+# adding ignore files to upload only what is needed to Apps Service
+src/test.js
+node_modules/
+.env
+package.json
+package-lock.json
+.vscode/
+test.js

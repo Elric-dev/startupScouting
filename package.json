@@ -1,0 +1,9 @@
+{
+  "name": "startup-scouting",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI Scouting tool for Paprika Case Study",
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
