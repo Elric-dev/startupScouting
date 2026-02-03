@@ -85,6 +85,49 @@ Invece di log su console volatili, il sistema mantiene un file `startup_scouter_
 5. **Passaggio 3:** Esegui "Generate Value Propositions" per finalizzare lo schema di branding:
 * *Formato: "Startup [Nome] aiuta [Target] a fare [Azione] in modo che [Beneficio]."*
 
+---
+
+## Assunzioni e Limiti del Prototipo
+
+### 1. Assunzioni (Assunzioni Tecniche)
+
+Stabilità delle API di Terze Parti: Si assume che gli endpoint v1 e v1beta di Google Generative AI rimangano attivi e non subiscano modifiche drastiche ai parametri di richiesta durante il periodo di valutazione. Nella strisce gratis, mi sono trovato con server timeouts spesso. 
+
+Accessibilità dei Siti Web: Il sistema assume che i siti web degli acceleratori e delle startup siano accessibili pubblicamente tramite protocollo HTTP/HTTPS e non siano protetti da sistemi anti-bot avanzati (es. Cloudflare con sfida JavaScript), che potrebbero bloccare UrlFetchApp.
+
+Formato del Contenuto: Si assume che le informazioni chiave (nome, portfolio, mission) siano presenti nei primi 8.000 caratteri dell'HTML delle pagine scansionate per rientrare nei limiti di contesto impostati.
+
+Validità della Chiave API: Il funzionamento dipende dalla presenza di una API Key valida e con fatturazione attiva configurata nelle Proprietà dello Script.
+
+### 2. Limiti (Limitazioni del Progetto)
+
+Limiti di Quota (RPM/RPD): Nonostante il passaggio al piano "Pay-as-you-go", il sistema è vincolato ai limiti di velocità del modello scelto (es. 15 richieste al minuto). Un volume massivo di dati potrebbe causare errori di saturazione temporanea.
+
+Timeout di Esecuzione: Google Apps Script ha un limite di esecuzione di 6 minuti per script. In caso di liste molto lunghe di startup (>30-40), il processo potrebbe interrompersi e richiedere una seconda esecuzione manuale per essere completato (grazie alla logica di idempotenza). Nella strisce gratis, ho avuto questo problema che viene anche insieme a un limite di RPM più basso, motivo per cui ho fatto l'upgrade. 
+
+Accuratezza del Modello (Allucinazioni): Sebbene la temperatura sia impostata a 0.2 per massimizzare la precisione, i modelli LLM possono occasionalmente generare informazioni non corrette se i dati nel sito web sorgente sono ambigui o insufficienti.
+
+Scraping Superficiale: Il prototipo analizza principalmente la homepage. Se un acceleratore elenca il proprio portfolio esclusivamente in sottopagine non linkate chiaramente o caricate dinamicamente (React/Angular senza SSR), il sistema potrebbe non individuare tutte le startup.
+
+Lingua del Contenuto: Il sistema è ottimizzato per analizzare siti in lingua inglese o nelle principali lingue europee; siti web in lingue con alfabeti non latini potrebbero produrre risultati meno accurati nella generazione delle Value Propositions.
+
+---
+
+## Evoluzioni Future & Scalabilità
+
+Per trasformare questo MVP in una piattaforma di scouting di livello enterprise, sono stati individuati i seguenti sviluppi futuri:
+
+Integrazione Headless Browser: Implementare un servizio di scraping basato su Puppeteer o Playwright per superare i limiti di UrlFetchApp, permettendo l'analisi di siti web dinamici (Single Page Applications) che caricano i contenuti tramite JavaScript.
+
+Database Esterno: Transizione da Google Sheets a un database relazionale (es. PostgreSQL su Google Cloud SQL) per gestire dataset di decine di migliaia di startup senza rallentamenti o limiti di righe.
+
+Pipeline di Data Enrichment: Integrare API di terze parti (come Crunchbase, Clearbit o LinkedIn) per arricchire automaticamente i profili delle startup con dati sui finanziamenti, numero di dipendenti e trend di crescita.
+
+Sistema di Monitoraggio Real-time: Implementazione di Google Cloud Functions con trigger temporizzati per monitorare costantemente i siti degli acceleratori e inviare notifiche (via Slack o Email) non appena viene aggiunta una nuova startup al portfolio.
+
+Interfaccia Utente Dedicata: Sviluppo di una dashboard in React o Next.js per visualizzare i dati in modo più intuitivo, con filtri avanzati per settore, nazione e "score" di rilevanza generato dall'AI.
+
+Provare ad automatizzare processi che con modelli propri, per non chiamare l'API ogni volta e migliorare il costo. 
 
 ---
 
